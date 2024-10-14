@@ -1,1 +1,1 @@
-from .process import ProcessThread
+from .process import ProcThread

@@ -7,7 +7,7 @@ from lib.binary.encoding import bytes2str
 class processerror(Exception):
     pass
 
-class ProcessThread(TubeThread):
+class ProcThread(TubeThread):
     _proc = None
 
     def __init__(self,
