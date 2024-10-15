@@ -65,10 +65,10 @@ class WinProcess(Tube):
         assert isinstance(args, (bytes, str, list)), \
                 "`args` is {}, must be 'bytes', 'str' or 'list'".format(type(args))
 
-        assert isinstance(env, dict), \
+        assert env is None or isinstance(env, dict), \
                 "`env` is {}, must be 'dict'".format(type(env))
 
-        assert isinstance(cwd, (bytes, str)), \
+        assert cwd is None or isinstance(cwd, (bytes, str)), \
                 "`cwd` is {}, must be 'bytes' or 'str'".format(type(env))
 
         if isinstance(args, (str, bytes)):
