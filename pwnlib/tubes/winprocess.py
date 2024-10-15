@@ -2,6 +2,7 @@ import os
 import subprocess
 from typing import Union, Optional, List, Mapping
 
+from .tube import Tube
 from pwnlib.binary.encoding import bytes2str
 
 is_windows = os.name == "nt"
@@ -105,7 +106,7 @@ class WinProcess(Tube):
         self._returncode = None
 
 
-    def _set_timeout(self, timeout: Union[int, float]=0)
+    def _set_timeout(self, timeout: Union[int, float]=0):
         self._current_time = timeout
 
 
