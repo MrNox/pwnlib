@@ -100,7 +100,7 @@ class WinProcess(Tube):
         info.hStdOutput = self._stdout.write
         info.hStdError = self._stderr.write
 
-        self.proc, _, self.pid, _ = win32process.CreateProcess(
+        self._proc, _, self_._pid, _ = win32process.CreateProcess(
                 None, args, None, None, True, flags, env, cwd, info)
 
         self._returncode = None
@@ -158,6 +158,6 @@ class WinProcess(Tube):
 
     @property
     def pid(self) -> int:
-        return self._proc.pid
+        return self._pid
 
 
