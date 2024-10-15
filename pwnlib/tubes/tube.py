@@ -3,11 +3,10 @@ import sys
 import abc
 import time
 import queue
-import threading
 from typing import Union, Optional, List
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 
-from lib.binary.encoding import str2bytes
+from pwnlib.binary.encoding import str2bytes
 
 class TubeThread(metaclass=abc.ABCMeta):
     def __init__(self, timeout: Optional[Union[int, float]]=None):

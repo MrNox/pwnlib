@@ -2,7 +2,7 @@ from .tube import TubeThread
 from subprocess import Popen, PIPE,STDOUT
 from typing import List, Optional, Union, Mapping
 
-from lib.binary.encoding import bytes2str
+from pwnlib.binary.encoding import bytes2str
 
 class processerror(Exception):
     pass
