@@ -22,8 +22,8 @@ class WinPipe(object):
 
         self.hread, self.hwrite = win32pipe.CreatePipe(sa, size)
 
-        assert self.hread != win32file.INVALID_HANDLE_VALUE or \
-                self.hwrite != win32file.INVALID_HANDLE_VALUE,
+        assert (self.hread != win32file.INVALID_HANDLE_VALUE or \
+                self.hwrite != win32file.INVALID_HANDLE_VALUE), \
                 "Could not create a pipe"
 
 

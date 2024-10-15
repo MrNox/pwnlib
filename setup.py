@@ -21,4 +21,5 @@ setup(
         "License :: OSI Approved :: MIT License",
     ],
     python_requires='>=3.9',
+    install_requires=['pycryptodome'],
 )
