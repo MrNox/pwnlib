@@ -1,4 +1,4 @@
-from .tube import TubeThread
+from .tube import Tube
 from subprocess import Popen, PIPE,STDOUT
 from typing import List, Optional, Union, Mapping
 
@@ -7,7 +7,7 @@ from pwnlib.binary.encoding import bytes2str
 class processerror(Exception):
     pass
 
-class ProcThread(TubeThread):
+class Process(Tube):
     _proc = None
 
     def __init__(self,
