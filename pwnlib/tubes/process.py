@@ -25,6 +25,10 @@ class Process(Tube):
         self._current_timeout = timeout
         super().__init__(timeout)
 
+
+        assert isinstance(args, (bytes, str, list)), \
+                "`args` is {}, must be 'bytes', 'str' or 'list'"
+
         assert isinstance(shell, bool), \
                 "`shell` is {}, must be 'bool'".format(type(shell))
 
@@ -98,6 +102,9 @@ class Process(Tube):
 
     def _recv_raw(self, size: int) -> bytes:
         data = None
+
+        if not self.is_alive():
+            return b''
 
         try:
             data = self._proc.stdout.read(size)
