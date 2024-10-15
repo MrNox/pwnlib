@@ -13,22 +13,24 @@ def p16(data, byteorder) -> bytes:
 
 
 def p32(data, byteorder) -> bytes:
-     assert isinstance(data, (int, float)), "{} given, must be 'int' or 'float')".format(type(data))
+    assert isinstance(data, (int, float)), "{} given, must be 'int' or 'float')".format(type(data))
+
 
     if isinstance(data, float):
-        return struct.pack(
-                '{}f'.format('<' if byteorder == 'little' else '>'),
-                data)
+       return struct.pack(
+
+               '{}f'.format('<' if byteorder == 'little' else '>'),
+               data)
 
     return (data & 0xFFFFFFFF).to_bytes(4, byteorder=byteorder)
 
 
 def p64(data, byteorder) -> bytes:
-     assert isinstance(data, (int, float)), "{} given, must be 'int' or 'double'".format(type(data))
+    assert isinstance(data, (int, float)), "{} given, must be 'int' or 'double'".format(type(data))
 
     if isinstance(data, float):
-        return struct.pack(
-                '{}d'.format('<' if byteorder == 'little' else '>'),
-                data)
+       return struct.pack(
+               '{}d'.format('<' if byteorder == 'little' else '>'),
+               data)
 
     return (data & 0xFFFFFFFFFFFFFFFF).to_bytes(8, byteorder=byteorder)
