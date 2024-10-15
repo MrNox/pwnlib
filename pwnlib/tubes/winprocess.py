@@ -100,7 +100,7 @@ class WinProcess(Tube):
         info.hStdOutput = self._stdout.write
         info.hStdError = self._stderr.write
 
-        self._proc, _, self_._pid, _ = win32process.CreateProcess(
+        self._proc, _, self._pid, _ = win32process.CreateProcess(
                 None, args, None, None, True, flags, env, cwd, info)
 
         self._returncode = None
@@ -122,12 +122,12 @@ class WinProcess(Tube):
     def _recv_raw(self, size: int) -> bytes:
         if self._current_time == 0:
             try:
-                _, data = win32file.ReadFile(self._stdout.read)
+                _, data = win32file.ReadFile(self._stdout.read, size)
                 return data
             except Exception as err:
                 raise err from None
 
-        _, data = win32file.ReadFile(self._stdout.read)
+        _, data = win32file.ReadFile(self._stdout.read, size)
         state = win32event.WaitForSingleObject(
                 self._stdout.read, self._current_time)
 

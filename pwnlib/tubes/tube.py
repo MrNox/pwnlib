@@ -136,6 +136,11 @@ class Tube(metaclass=abc.ABCMeta):
                  timeout: Optional[Union[int, float]]=None) -> int:
         assert isinstance(data, (str, bytes)), "{} given, 'str' or 'bytes')".format(type(data))
 
+        if isinstance(int, float):
+            data = str(data).encode()
+        else:
+            data = str2bytes(data)
+
         return self.send(data + b'\n', timeout)
 
 
