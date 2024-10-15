@@ -4,11 +4,10 @@ import abc
 import time
 import queue
 from typing import Union, Optional, List
-from concurrent.futures import ThreadPoolExecutor, TimeoutError
 
 from pwnlib.binary.encoding import str2bytes
 
-class TubeThread(metaclass=abc.ABCMeta):
+class Tube(metaclass=abc.ABCMeta):
     def __init__(self, timeout: Optional[Union[int, float]]=None):
         # set the default timeout
         self._default_timeout = timeout
@@ -44,18 +43,15 @@ class TubeThread(metaclass=abc.ABCMeta):
             self.set_timeout(timeout)
             current_timeout = timeout
 
-        with ThreadPoolExecutor() as executor:
-            future = executor.submit(self._recv_raw, size)
-            try:
-                return future.result(timeout=current_timeout)
-            except TimeoutError:
-                raise TimeoutError("Timeout (recv)")
-            except Exception as err:
-                raise err from None
-            finally:
-                if timeout is not None:
-                    self.set_timeout()
-
+        try:
+            return self._recv_raw(size)
+        except TimeoutError:
+            raise TimeoutError("Timeout (recv)")
+        except Exception as err:
+            raise err from None
+        finally:
+            if timeout is not None:
+                self.set_timeout()
 
     def recvuntil(self,
                   delim: Union[str, bytes, List[Union[str, bytes]]],
@@ -126,17 +122,15 @@ class TubeThread(metaclass=abc.ABCMeta):
             self.set_timeout(timeout)
             current_timeout = timeout
 
-        with ThreadPoolExecutor() as executor:
-            future = executor.submit(self._send_raw, data)
-            try:
-                return future.result(timeout=current_timeout)
-            except TimeoutError:
-                raise TimeoutError("Timeout (recv)")
-            except Exception as err:
-                raise err from None
-            finally:
-                if timeout is not None:
-                    self.set_timeout()
+        try:
+            return self._send_raw(data)
+        except TimeoutError:
+            raise TimeoutError("Timeout (recv)")
+        except Exception as err:
+            raise err from None
+        finally:
+            if timeout is not None:
+                self.set_timeout()
 
     def sendline(self, data: Union[str,bytes],
                  timeout: Optional[Union[int, float]]=None) -> int:
