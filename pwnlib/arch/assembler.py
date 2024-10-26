@@ -90,6 +90,14 @@ def assemble(asm_code: Union[bytes, str], target_arch: str="x64") -> Optional[by
     obj_file_path = os.path.join(tempfile.gettempdir(), fname+".obj")
     bin_file_path = os.path.join(tempfile.gettempdir(), fname+".bin")
 
+    def del_tmp_files():
+        try:
+            os.unlink(asm_file_path)
+            os.unlink(obj_file_path)
+            os.unlink(bin_file_path)
+        except:
+            pass
+
     vcvarsxx_path = os.path.join(VS_PATH,
                             "VC" ,
                             "Auxiliary",
@@ -112,28 +120,30 @@ def assemble(asm_code: Union[bytes, str], target_arch: str="x64") -> Optional[by
     with open(asm_file_path,"wb") as f:
         f.write(code)
 
-    cmd = [vcvarsxx_path, "&&", ml, "/c" , asm_file_path]
+    cmd = [vcvarsxx_path, "&&", ml, "/Fo", obj_file_path, "/c" , asm_file_path]
     if subprocess.Popen(cmd, shell=True).wait() != 0:
         print("Assembled failed")
-        os.unlink(asm_file_path)
+        del_tmp_files()
         return None
 
     if not os.path.isfile(obj_file_path):
         print("Object not builded")
-        os.unlink(asm_file_path)
+        del_tmp_files()
         return None
 
     cmd  = [
         objcopy_path,
-        "-O", "binary",
-        "-j", "text$mn",
+        '-O', 'binary',
+        '-j', '.text$mn',
         obj_file_path, bin_file_path
     ]
     if subprocess.Popen(cmd).wait() != 0:
+        del_tmp_files()
         print("Error extracting the shellcode")
         return None
 
     if os.path.isfile(bin_file_path):
+        del_tmp_files()
         print("Binary file doesn't exist")
         return None
 
@@ -141,8 +151,7 @@ def assemble(asm_code: Union[bytes, str], target_arch: str="x64") -> Optional[by
     with open(bin_file_path, "rb") as f:
         shellcode = f.read()
 
-    os.unlink(asm_file_path)
-    os.unlink(obj_file)
-    os.unlink(bin_file)
+
+    del_tmp_files()
 
     return shellcode
