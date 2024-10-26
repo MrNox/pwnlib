@@ -142,7 +142,7 @@ def assemble(asm_code: Union[bytes, str], target_arch: str="x64") -> Optional[by
         print("Error extracting the shellcode")
         return None
 
-    if os.path.isfile(bin_file_path):
+    if not os.path.isfile(bin_file_path):
         del_tmp_files()
         print("Binary file doesn't exist")
         return None
