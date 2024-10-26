@@ -1,12 +1,11 @@
 import os
 import sys
-import config
 import platform
 import tempfile
 import subprocess
 from typing import Literal, Optional, Union
 
-from .arch import VS_PATH, BIN_UTILS_PATH
+from .config import VS_PATH, BIN_UTILS_PATH
 from pwnlib.binary.encoding import bytes2str, str2bytes
 
 
@@ -14,7 +13,7 @@ x86 = ("intel", "intel32", "i386", "x86")
 x64 = ("intel64", "x64", "x86-64", "amd","amd64")
 
 def detect_arch() -> Literal[32, 64, -1]:
-    arch =  plataform.machine()
+    arch =  platform.machine()
     arch = arch.lower().replace(" ", "").replace("_", "-")
 
     if arch in x86:
@@ -86,7 +85,7 @@ def assemble(asm_code: Union[bytes, str], target_arch: str="x64") -> Optional[by
         print("Unknow target architecture {}".format(target_arch))
         return None
 
-    fname = os.urandom(32).hex()
+    fname = os.urandom(8).hex()
     asm_file_path = os.path.join(tempfile.gettempdir(), fname+".asm")
     obj_file_path = os.path.join(tempfile.gettempdir(), fname+".obj")
     bin_file_path = os.path.join(tempfile.gettempdir(), fname+".bin")
@@ -101,7 +100,7 @@ def assemble(asm_code: Union[bytes, str], target_arch: str="x64") -> Optional[by
         print("Visual studio path doesn't exist: {}".format(vcvarsxx_path))
         return None
 
-    objcopy_path = os.path.join(BIN_UTILS_PATH, obj_file_path)
+    objcopy_path = os.path.join(BIN_UTILS_PATH, "objcopy.exe")
     if not os.path.isfile(objcopy_path):
         print("Bin utils path doesn't exist: {}".format(objcopy_path))
         return None
