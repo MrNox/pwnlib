@@ -120,7 +120,7 @@ def assemble(asm_code: Union[bytes, str], target_arch: str="x64") -> Optional[by
     with open(asm_file_path,"wb") as f:
         f.write(code)
 
-    cmd = [vcvarsxx_path, ">NUL","&&", ml, "/Fo", obj_file_path, "/c" , asm_file_path, ">NUL"]
+    cmd = [vcvarsxx_path, ">NUL","&&", ml, "/nologo","/Fo", obj_file_path, "/c" , asm_file_path, ">NUL"]
     if subprocess.Popen(cmd, shell=True).wait() != 0:
         print("Assembled failed")
         del_tmp_files()
