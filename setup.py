@@ -22,4 +22,5 @@ setup(
     ],
     python_requires='>=3.9',
     install_requires=['pycryptodome'],
+    install_requires=['pywin32'],
 )
